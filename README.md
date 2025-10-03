@@ -12,20 +12,21 @@ Villagers who have been in the industry for a while with some trades in their
 pocket aren't as easy to trick however and cannot be bonked with just some
 gardening tool. But don't worry, we've got something special prepared for them!
 
-<img alt="Spinnig mace" src="docs/assets/mace.gif" width="128px" />
+<img alt="Spinning mace" src="docs/assets/mace.gif" width="128px" />
 
 **INTRODUCING: THE MACE**
 
 With this flashy new 1.21 item straight from the Trial Chambers we're able to
 give those stubborn villagers a real *BLAM!* and they'll forget everything
-including their profession and experience.
+including their profession and experience. They will even forget their gossips
+if they have been cured or punched, but you would never do that, *right?*
 
 And if you're a server admin the best news is yet to come: The mod is entirely
 server-side, your players don't need to install anything!
 
 Sounds like quite the great mod doesn't it? We're still working on a system to
 encourage villagers to get a certain trade, but until then head to the [latest
-release](https://github.com/alvesvaren/bonk/releases/latest) and check it out!
+release](https://github.com/) and check it out!
 
 ## TLDR;
 
@@ -35,10 +36,9 @@ It will not:<br>
 **Cycle their offers if they have been traded with or have no offers**
 
 *Blamming* a villager with a mace will:<br>
-**Cycle their offers, reset their experience and unlock their trades**<br>
-It will not:<br>
-**Make them forget they have been cured or anything not listed above**
+**Cycle their offers and reset their experience, gossips and profession**
 
-The mod is **server-side**, players on a server don't need it installed.
+The mod is **server-side**, players connecting to your server don't need it installed.<br>
+It also works in singleplayer.
 
 Trade encouragement coming soon...

@@ -49,7 +49,7 @@ public abstract class VillagerEntityMixin extends MerchantEntity implements Unco
         if (!this.isSleeping() && unconsciousTime > 0) {
             this.setAiDisabled(true);
 
-            Vec3d pos = this.getPos();
+            Vec3d pos = this.getEntityPos();
             this.sleep(this.getBlockPos());
             this.setPos(pos.x, pos.y, pos.z);
         }
