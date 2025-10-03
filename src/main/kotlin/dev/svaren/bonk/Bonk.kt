@@ -96,6 +96,7 @@ class Bonk : ModInitializer {
         playBlamSounds(serverWorld, villager)
 
         villager.resetOffers()
+        villager.gossip.clear()
     }
 
     private fun spawnBonkParticles(serverWorld: ServerWorld, entity: Entity) {
