@@ -6,13 +6,11 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.passive.VillagerEntity
 import net.minecraft.item.Items
-import net.minecraft.network.message.MessageType
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.registry.tag.ItemTags
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
-import net.minecraft.text.Text
 import net.minecraft.util.ActionResult
 import net.minecraft.village.VillagerData
 import net.minecraft.village.VillagerProfession
@@ -66,7 +64,7 @@ class Bonk : ModInitializer {
             return false
         }
 
-        val serverWorld = villager.world as ServerWorld
+        val serverWorld = villager.entityWorld as ServerWorld
 
         spawnBonkParticles(serverWorld, villager)
         playBonkSounds(serverWorld, villager)
@@ -78,7 +76,7 @@ class Bonk : ModInitializer {
 
     /** Play effects for a bonk that has failed. */
     private fun failBonk(villager: VillagerEntity) {
-        val serverWorld = villager.world as ServerWorld
+        val serverWorld = villager.entityWorld as ServerWorld
 
         serverWorld.spawnParticles(
             ParticleTypes.ANGRY_VILLAGER, villager.x, villager.y + 1.5, villager.z, 1, 0.0, 0.0, 0.0, 0.01
@@ -92,7 +90,7 @@ class Bonk : ModInitializer {
     private fun blamVillager(villager: VillagerEntity) {
         (villager as UnconciousEntity).unconsciousTime = 60
 
-        val serverWorld = villager.world as ServerWorld
+        val serverWorld = villager.entityWorld as ServerWorld
 
         spawnBlamParticles(serverWorld, villager)
         playBlamSounds(serverWorld, villager)
