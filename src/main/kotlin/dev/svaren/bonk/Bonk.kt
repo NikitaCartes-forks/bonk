@@ -14,9 +14,18 @@ import net.minecraft.sound.SoundEvents
 import net.minecraft.util.ActionResult
 import net.minecraft.village.VillagerData
 import net.minecraft.village.VillagerProfession
+import net.minecraft.registry.Registries
+import net.minecraft.nbt.NbtCompound
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-
+import com.github.quiltservertools.ledger.Ledger
+import com.github.quiltservertools.ledger.registry.ActionRegistry
+import com.github.quiltservertools.ledger.actions.AbstractActionType
+import com.github.quiltservertools.ledger.utility.NbtUtils.createNbt
+import com.github.quiltservertools.ledger.utility.Sources
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents
+import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.server.MinecraftServer
 
 class Bonk : ModInitializer {
     private val logger: Logger = LoggerFactory.getLogger("BONK")
@@ -35,9 +44,18 @@ class Bonk : ModInitializer {
             val villager = entity as VillagerEntity
 
             if (handItem.isIn(ItemTags.SHOVELS)) {
-                bonkVillager(villager)
+                val oldNbt: NbtCompound = villager.createNbt()
+                if (bonkVillager(villager)) {
+                    val action = BonkActionType()
+                    populateAction(action, player, villager, oldNbt)
+                    Ledger.api.logAction(action)
+                }
             } else if (handItem.item == Items.MACE) {
+                val oldNbt = villager.createNbt()
                 blamVillager(villager)
+                val action = BlamActionType()
+                populateAction(action, player, villager, oldNbt)
+                Ledger.api.logAction(action)
             } else {
                 return ActionResult.PASS
             }
@@ -46,7 +64,28 @@ class Bonk : ModInitializer {
             return ActionResult.FAIL
         })
 
+        ServerLifecycleEvents.SERVER_STARTING.register(::serverStarting)
+
         logger.info("Initialized!")
+    }
+
+    private fun serverStarting(server: MinecraftServer) {
+        ActionRegistry.registerActionType { BonkActionType() }
+        ActionRegistry.registerActionType { BlamActionType() }
+    }
+
+    private fun populateAction(action: AbstractActionType, player: PlayerEntity, villager: VillagerEntity, oldNbt: NbtCompound) {
+        action.pos = villager.blockPos
+        action.world = villager.entityWorld.registryKey.value
+        
+        action.objectIdentifier = Registries.ENTITY_TYPE.getId(villager.type)
+        action.oldObjectIdentifier = Registries.ENTITY_TYPE.getId(villager.type)
+        
+        action.objectState = villager.createNbt().toString()
+        action.oldObjectState = oldNbt.toString()
+        
+        action.sourceName = Sources.PLAYER
+        action.sourceProfile = player.playerConfigEntry
     }
 
     /**
